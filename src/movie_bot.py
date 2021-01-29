@@ -70,17 +70,17 @@ async def on_message(ctx): # Called when a message is created and sent.
     print(message_id)
 
 
-@bot.command(name='edit')
+@bot.command(name='edit') # Edit last message.
 async def edit(ctx):
-    message_id1 = message_id
-    channel_id1 = bot.get_channel(channel_id)
-    print(channel_id1)
-    msg = await channel_id1.fetch_message(message_id1)
-    await msg.edit(content="""```diff\n+ Hello!```""")
+    message_id1 = message_id # Get message id
+    channel_id1 = bot.get_channel(channel_id) # Get channel id for object
+    print(channel_id1) # Checking the channel Id is right or wrong
+    msg = await channel_id1.fetch_message(message_id1) # Fetch the last message
+    await msg.edit(content="""```diff\n+ Hello!```""") # Editing last message
 
 
-@bot.command(name='ekle')
-async def editfile(ctx, *args):
+@bot.command(name='ekle') # Create an add command
+async def editfile(ctx, *args): # Define an editfile method
     i = -1
     response = ""
     for arg in args:
@@ -110,35 +110,34 @@ async def editfile(ctx, *args):
     elif i == -1:
         await ctx.channel.send("Elif bir işi de başar be aslanım:" + args)
 
-@bot.command(name='kontrolet')
-async def editfile(ctx):
-    input_file = "src\movielist.txt"
-    with open(input_file, 'r') as filepointer:
-        lines = filepointer.readlines()
-        new_lines = []
-        for line in lines:
-            # Strip whitespaces
-            line = line.strip()
-            if line not in new_lines:
-                new_lines.append(line)
-            else:
+@bot.command(name='kontrolet') # Create a checkduplicate command
+async def editfile(ctx): # Define editfile method
+    input_file = "src\movielist.txt" # Defining a variable to store the file path
+    with open(input_file, 'r') as filepointer: # Open the file
+        lines = filepointer.readlines() # Read lines, not just the end of the word. End of the last character
+        new_lines = [] # Defining a variable to store the new lines in array list.
+        for line in lines: # Get the all line in the file
+            line = line.strip() # Strip whitespaces
+            if line not in new_lines: # If new_lines and line doesn't match
+                new_lines.append(line) # Add to the last line
+            else: # Else print line, we don't need that but I want to see which word is duplicate
                 print(line)
-    outputfile = "src\movielist.txt"
-    with open(outputfile, 'w') as filepointer:
-        filepointer.write('\n'.join(new_lines))
+    outputfile = "src\movielist.txt" # Defining a variable to store the file path
+    with open(outputfile, 'w') as filepointer: # Open the file
+        filepointer.write('\n'.join(new_lines)) # Write into the file all the array elements.
 
 
-@bot.command(name='gününfilmi', help='Bu komut rastgele bir film sececektir.')
-async def gununfilmi(ctx):
-    tire = '-'
-    input_file = "src\movielist.txt"
-    with open(input_file, 'r') as filepointer:
-        lines = filepointer.readlines()
-        for line in lines:
-            line = line.strip()
-            choice = random.choice(lines)
-            if tire in line:
-                await ctx.channel.send(choice)
+@bot.command(name='gününfilmi', help='Bu komut rastgele bir film sececektir.') # Creating a todaysmovie command
+async def gununfilmi(ctx): # Defining todaysmovie method
+    tire = '-' # Defining a dash variable
+    input_file = "src\movielist.txt" # Defining a variable to store the file path
+    with open(input_file, 'r') as filepointer: # Open the file
+        lines = filepointer.readlines() # Read lines, not just the end of the word. End of the last character
+        for line in lines: # Get all lines elements into the line array.
+            line = line.strip() # Strip whitespaces
+            choice = random.choice(lines) # Select a random element into the array
+            if tire in line: # If elements has '-' (dash) in that line
+                await ctx.channel.send(choice) # Choose one and send the message
                 await ctx.channel.send('https://media.giphy.com/media/8fEaweALlO9dUmYuqv/giphy.gif')
                 break
 
