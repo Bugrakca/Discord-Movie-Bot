@@ -1,27 +1,35 @@
 # MovieBot
+# Import OS library
 import os
+# Importing random library
 import random
+# Importing discord ext commands
 from discord.ext.commands.core import Command
+# Importing discord error command - CommandNotFound
 from discord.ext.commands.errors import CommandNotFound
 
+# Importing dotenv library
 from dotenv import load_dotenv
+# Importing discord commands
 from discord.ext import commands
 
+# Load dotenv file
 load_dotenv()
+# Load DISCORD TOKEN from dotenv file
 TOKEN = os.getenv('DISCORD_TOKEN')
 
+# Assign a prefix for all bot commands name
 bot = commands.Bot(command_prefix='!')
 
-
+# Printing to console, 'Bot is connected'
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
 
-
-@bot.event
+@bot.event # When bot connect, open movielist.txt file. Check all the lines if has '-' (dash) or not.
 async def on_connect():
-    input_file = "moviebot\movielist.txt"
-    with open(input_file, 'r') as filepointer:  # Su an bit problem gorunmuyor
+    input_file = "src\movielist.txt"
+    with open(input_file, 'r') as filepointer:  # Su an bir problem gorunmuyor
         tire = '-'
         arti = '+'
         global izlenenler
@@ -30,22 +38,21 @@ async def on_connect():
         izlenecek = []
         lines = filepointer.readlines()
         for line in lines:
-            if tire in line:
+            if tire in line: # If one line has '-' (dash), then add that line in to the izlenecekler(want to watch) list.
                 izlenecek.append(line)
-            else:
+            else: # Else add that line in to izleneneler(watched) list.
                 izlenenler.append(line)
 
 
 @bot.event
-async def on_command_error(ctx, error):  # burada ctx ile errorleri aldık
-    # burada da otomatik olan error kodlarından birini kullandık
-    if isinstance(error, CommandNotFound):
-        await ctx.channel.send(":angry: Senin komutun burada geçmez aslanım :angry:")
-        await ctx.channel.send('https://tenor.com/view/critical-role-shoo-go-away-talks-machina-gif-11759908')
+async def on_command_error(ctx, error):  # Get errors by using ctx and error arguments
+    if isinstance(error, CommandNotFound): # Using the CommandNotFound command for the errors. If there is no match command name then give error message.
+        await ctx.channel.send(":angry: Senin komutun burada geçmez aslanım :angry:") # Sending an error message for that channel.
+        await ctx.channel.send('https://tenor.com/view/critical-role-shoo-go-away-talks-machina-gif-11759908') # Sending a gif message for that channel.
 
-
+# Creating a bot command for saying hello.
 @bot.command(name='hello', help='Help melp yok lan, adam olsaydın da help istemeseydin')
-async def on_message(ctx):
+async def on_message(ctx): # Called when a message is created and sent.
     if ctx.author == bot.user:
         return
     global channel_id
@@ -97,7 +104,7 @@ async def editfile(ctx, *args):
     elif i == 2:
         await ctx.channel.send("Eklendi vakti gelince izleriz." + args)
         izlenecek.append("\n-" + args)
-        output_file = 'moviebot\movielist.txt'
+        output_file = 'src\movielist.txt'
         with open(output_file, 'a') as filepointer:
             filepointer.write("\n-" + args)
     elif i == -1:
@@ -105,7 +112,7 @@ async def editfile(ctx, *args):
 
 @bot.command(name='kontrolet')
 async def editfile(ctx):
-    input_file = "moviebot\movielist.txt"
+    input_file = "src\movielist.txt"
     with open(input_file, 'r') as filepointer:
         lines = filepointer.readlines()
         new_lines = []
@@ -116,7 +123,7 @@ async def editfile(ctx):
                 new_lines.append(line)
             else:
                 print(line)
-    outputfile = "moviebot\movielist.txt"
+    outputfile = "src\movielist.txt"
     with open(outputfile, 'w') as filepointer:
         filepointer.write('\n'.join(new_lines))
 
@@ -124,7 +131,7 @@ async def editfile(ctx):
 @bot.command(name='gününfilmi', help='Bu komut rastgele bir film sececektir.')
 async def gununfilmi(ctx):
     tire = '-'
-    input_file = "moviebot\movielist.txt"
+    input_file = "src\movielist.txt"
     with open(input_file, 'r') as filepointer:
         lines = filepointer.readlines()
         for line in lines:
