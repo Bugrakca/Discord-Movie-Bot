@@ -11,7 +11,9 @@
 # DONE 2.1- önce arraye eklenecek.
 # DONE 2.2- sonra kod direkt movielist.txt verisini silinip arraydekileri yazacak.
 # DONE   3- !bugeceninfilmi random film çekecek.
-# TODO 3.1- Timer
+# TODO 3.1- Timer Olsun
+# DONE 3.2- Cikar goster gifini ekle
+# FIXME:3.3- a harfini yazinca tum a harfini iceren filmleri listeden silinmesi.
 
 # Import OS library
 import os
@@ -116,6 +118,7 @@ async def edit(ctx):
 # Create an add command
 @bot.command(name='ekle', help='Listeye yeni film ekler')
 async def editfile(ctx, *args):  # Define an editfile method
+    guncelle()
     i = -1
     response = ""
     for arg in args:
@@ -137,7 +140,7 @@ async def editfile(ctx, *args):  # Define an editfile method
     elif i == 1:
         await ctx.channel.send("E bu zaten izlenmiiiş. Sen yok muydun? :cry: " + args)
     elif i == 2:
-        await ctx.channel.send("Eklendi vakti gelince izleriz." + args)
+        await ctx.channel.send("Eklendi. Vakti gelince izleriz." + args)
         izlenecek.append("\n-" + args)
         output_file = 'src\movielist.txt'
         with open(output_file, 'a') as filepointer:
@@ -204,6 +207,7 @@ async def liste(ctx):  # Defining list method
 @bot.command(name="izlenenler", help='Izlenenler listesini ekrana yazridir.')
 async def izlenenler(ctx):
     guncelle()
+    await ctx.channel.send('https://cdn.discordapp.com/attachments/804499069601841173/805175464955609118/tenor.gif')
     response = """```diff\n"""
     i = 0
     for line in izlenenler:
@@ -214,6 +218,10 @@ async def izlenenler(ctx):
             response = """```diff\n"""
     if i % 110 != 0:
         await ctx.channel.send(response + """```""")
+
+@bot.command(name ='çıkargöster', help = 'Çıkar göster gifini çıkarıp gösterir')
+async def cikargoster(ctx):
+    await ctx.channel.send('https://cdn.discordapp.com/attachments/804499069601841173/805175464955609118/tenor.gif')
 
 
 @bot.command(name='izlendi', help='Izlenen filmleri izlenenler listesine ekleyecektir.')
@@ -244,7 +252,7 @@ async def editfile(ctx, args):
         filepointer.write('\n'.join(new_lines))
     filepointer.close(outputfile)
 
-@bot.command(name='çıkar', help='Izlenen filmleri izlenenler listesine ekleyecektir.')
+@bot.command(name='izlenmedi', help='Izlenen filmleri izlenenler listesinden çıkaracaktır.')
 async def editfile(ctx, args):
     # Gets the given value start
     response = ""
@@ -262,7 +270,31 @@ async def editfile(ctx, args):
                 if args in line:
                     line = line.replace("+", "-")
                     new_lines.append(line)
-                    await ctx.channel.send(line.replace('-', '') + "Listeden çıkarıldı!")
+                    await ctx.channel.send(line.replace('-', '') + " İzlenenler listesinden çıkarıldı!")
+                else:
+                    new_lines.append(line.title())
+    outputfile = "src\movielist.txt"
+    with open(outputfile, 'w') as filepointer:
+        filepointer.write('\n'.join(new_lines))
+    filepointer.close(outputfile)
+
+@bot.command(name='çıkar', help='Izlenen filmleri izlenenler listesinden çıkaracaktır.')
+async def editfile(ctx, args):
+    # Gets the given value start
+    response = ""
+    for arg in args:
+        response = response + "" + arg
+    args = response.title()
+    # Gets the given value end
+    input_file = "src\movielist.txt"
+    with open(input_file, 'r') as filepointer:
+        lines = filepointer.readlines()
+        new_lines = []
+        for line in lines:
+            line = line.strip()
+            if line not in new_lines:
+                if args in line:
+                    await ctx.channel.send(line.replace('-', '') + " Listeden silindi!")
                 else:
                     new_lines.append(line.title())
     outputfile = "src\movielist.txt"
@@ -273,4 +305,5 @@ async def editfile(ctx, args):
 @bot.command(name='yazarlar', help='Yazarları gösterir.')
 async def editfile(ctx):
     await ctx.channel.send("Bu bot;\nBuğra Akca ve Elif Nur Kemiksiz\nTarafından yazılmıştır.\n(evet tarafından)")
+
 bot.run(TOKEN)
