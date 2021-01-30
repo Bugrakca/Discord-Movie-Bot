@@ -251,7 +251,6 @@ async def editfile(ctx, args):
     for arg in args:
         response = response + "" + arg
     args = response.title()
-    print("calışıyor " + args + " \n")
     # Gets the given value end
     input_file = "src\movielist.txt"
     with open(input_file, 'r') as filepointer:
@@ -262,7 +261,6 @@ async def editfile(ctx, args):
             if line not in new_lines:
                 if args in line:
                     line = line.replace("+", "-")
-                    print("calışıyor2 " + args + " eşittir " + line)
                     new_lines.append(line)
                     await ctx.channel.send(line.replace('-', '') + "Listeden çıkarıldı!")
                 else:
