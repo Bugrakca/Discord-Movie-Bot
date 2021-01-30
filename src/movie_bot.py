@@ -146,7 +146,7 @@ async def editfile(ctx, *args):  # Define an editfile method
         await ctx.channel.send("Elif bir işi de başar be aslanım:" + args)
 
 
-@bot.command(name='kontrolet')  # Create a checkduplicate command
+@bot.command(name='kontrolet', help = 'Listede ayni isimden film var mi kontrol edecektir, varsa birini silecek.')  # Create a checkduplicate command
 async def editfile(ctx):  # Define editfile method
     input_file = "src\movielist.txt"  # Defining a variable to store the file path
     with open(input_file, 'r') as filepointer:  # Open the file
