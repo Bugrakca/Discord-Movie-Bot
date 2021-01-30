@@ -1,4 +1,18 @@
 # MovieBot
+
+# DONE 0.1- i/o ile dosyadan okunma yapılacak.
+# DONE 0.2- i/odaki veriler arraye aktarılacak
+# DONE 0.3- i/odaki verilerde - olanlar izlenecek arrayine +lar izlenenler arrayine aktarılacak
+# DONE 0.4- !izlenecek ve !izlenen komutları çalışır olacak
+# DONE    1- birisi gelecek !add moviename yazcak
+# DONE 1.1- izlenecek filmler incelenecek böyle bir film var mı? --->ya da sadece bir array olur
+# DONE 1.2- izlenen filmler incelenecek böyle bir film var mı?
+# DONE    2- daha önce eklenmiş böyle bir film yoksa ekleyecek NOT: eklenecek filmin başında - olacak
+# DONE 2.1- önce arraye eklenecek.
+# DONE 2.2- sonra kod direkt movielist.txt verisini silinip arraydekileri yazacak.
+# DONE   3- !bugeceninfilmi random film çekecek.
+# TODO 3.1- Timer
+
 # Import OS library
 import os
 # Importing random library
@@ -22,12 +36,20 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 bot = commands.Bot(command_prefix='!')
 
 # Printing to console, 'Bot is connected'
+
+
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
 
-@bot.event # When bot connect, open movielist.txt file. Check all the lines if has '-' (dash) or not.
+
+# When bot connect, open movielist.txt file. Check all the lines if has '-' (dash) or not.
+@bot.event
 async def on_connect():
+    guncelle()
+
+
+def guncelle():
     input_file = "src\movielist.txt"
     with open(input_file, 'r') as filepointer:  # Su an bir problem gorunmuyor
         tire = '-'
@@ -38,21 +60,31 @@ async def on_connect():
         izlenecek = []
         lines = filepointer.readlines()
         for line in lines:
-            if tire in line: # If one line has '-' (dash), then add that line in to the izlenecekler(want to watch) list.
+            # If one line has '-' (dash), then add that line in to the izlenecekler(want to watch) list.
+            if tire in line:
                 izlenecek.append(line)
-            else: # Else add that line in to izleneneler(watched) list.
+            # Else add that line in to izleneneler(watched) list.
+            elif arti in line:
                 izlenenler.append(line)
+            else:
+                print('something is wrong')
 
 
 @bot.event
-async def on_command_error(ctx, error):  # Get errors by using ctx and error arguments
-    if isinstance(error, CommandNotFound): # Using the CommandNotFound command for the errors. If there is no match command name then give error message.
-        await ctx.channel.send(":angry: Senin komutun burada geçmez aslanım :angry:") # Sending an error message for that channel.
-        await ctx.channel.send('https://tenor.com/view/critical-role-shoo-go-away-talks-machina-gif-11759908') # Sending a gif message for that channel.
+# Get errors by using ctx and error arguments
+async def on_command_error(ctx, error):
+    # Using the CommandNotFound command for the errors. If there is no match command name then give error message.
+    if isinstance(error, CommandNotFound):
+        # Sending an error message for that channel.
+        await ctx.channel.send(":angry: Senin komutun burada geçmez aslanım :angry:")
+        # Sending a gif message for that channel.
+        await ctx.channel.send('https://tenor.com/view/critical-role-shoo-go-away-talks-machina-gif-11759908')
 
 # Creating a bot command for saying hello.
+
+
 @bot.command(name='hello', help='Help melp yok lan, adam olsaydın da help istemeseydin')
-async def on_message(ctx): # Called when a message is created and sent.
+async def on_message(ctx):  # Called when a message is created and sent.
     if ctx.author == bot.user:
         return
     global channel_id
@@ -70,17 +102,20 @@ async def on_message(ctx): # Called when a message is created and sent.
     print(message_id)
 
 
-@bot.command(name='edit') # Edit last message.
+# Edit last message.
+@bot.command(name='edit', help='Son yazilan mesaji duzenler.')
 async def edit(ctx):
-    message_id1 = message_id # Get message id
-    channel_id1 = bot.get_channel(channel_id) # Get channel id for object
-    print(channel_id1) # Checking the channel Id is right or wrong
-    msg = await channel_id1.fetch_message(message_id1) # Fetch the last message
-    await msg.edit(content="""```diff\n+ Hello!```""") # Editing last message
+    message_id1 = message_id  # Get message id
+    channel_id1 = bot.get_channel(channel_id)  # Get channel id for object
+    print(channel_id1)  # Checking the channel Id is right or wrong
+    # Fetch the last message
+    msg = await channel_id1.fetch_message(message_id1)
+    await msg.edit(content="""```diff\n+ Hello!```""")  # Editing last message
 
 
-@bot.command(name='ekle') # Create an add command
-async def editfile(ctx, *args): # Define an editfile method
+# Create an add command
+@bot.command(name='ekle', help='Listeye yeni film ekler')
+async def editfile(ctx, *args):  # Define an editfile method
     i = -1
     response = ""
     for arg in args:
@@ -110,35 +145,134 @@ async def editfile(ctx, *args): # Define an editfile method
     elif i == -1:
         await ctx.channel.send("Elif bir işi de başar be aslanım:" + args)
 
-@bot.command(name='kontrolet') # Create a checkduplicate command
-async def editfile(ctx): # Define editfile method
-    input_file = "src\movielist.txt" # Defining a variable to store the file path
-    with open(input_file, 'r') as filepointer: # Open the file
-        lines = filepointer.readlines() # Read lines, not just the end of the word. End of the last character
-        new_lines = [] # Defining a variable to store the new lines in array list.
-        for line in lines: # Get the all line in the file
-            line = line.strip() # Strip whitespaces
-            if line not in new_lines: # If new_lines and line doesn't match
-                new_lines.append(line) # Add to the last line
-            else: # Else print line, we don't need that but I want to see which word is duplicate
-                print(line)
-    outputfile = "src\movielist.txt" # Defining a variable to store the file path
-    with open(outputfile, 'w') as filepointer: # Open the file
-        filepointer.write('\n'.join(new_lines)) # Write into the file all the array elements.
+
+@bot.command(name='kontrolet')  # Create a checkduplicate command
+async def editfile(ctx):  # Define editfile method
+    input_file = "src\movielist.txt"  # Defining a variable to store the file path
+    with open(input_file, 'r') as filepointer:  # Open the file
+        # Read lines, not just the end of the word. End of the last character
+        lines = filepointer.readlines()
+        # Defining a variable to store the new lines in array list.
+        new_lines = []
+        for line in lines:  # Get the all line in the file
+            line = line.strip()  # Strip whitespaces
+            if line not in new_lines:  # If new_lines and line doesn't match
+                new_lines.append(line.title())  # Add to the last line
+            else:  # Else print line, we don't need that but I want to see which word is duplicate
+                print(line.title())
+    outputfile = "src\movielist.txt"  # Defining a variable to store the file path
+    with open(outputfile, 'w') as filepointer:  # Open the file
+        # Write into the file all the array elements.
+        filepointer.write('\n'.join(new_lines))
 
 
-@bot.command(name='gününfilmi', help='Bu komut rastgele bir film sececektir.') # Creating a todaysmovie command
-async def gununfilmi(ctx): # Defining todaysmovie method
-    tire = '-' # Defining a dash variable
-    input_file = "src\movielist.txt" # Defining a variable to store the file path
-    with open(input_file, 'r') as filepointer: # Open the file
-        lines = filepointer.readlines() # Read lines, not just the end of the word. End of the last character
-        for line in lines: # Get all lines elements into the line array.
-            line = line.strip() # Strip whitespaces
-            choice = random.choice(lines) # Select a random element into the array
-            if tire in line: # If elements has '-' (dash) in that line
-                await ctx.channel.send(choice) # Choose one and send the message
+# Creating a todaysmovie command
+@bot.command(name='gününfilmi', help='Bu komut rastgele bir film sececektir.')
+async def gununfilmi(ctx):  # Defining todaysmovie method
+    tire = '-'  # Defining a dash variable
+    input_file = "src\movielist.txt"  # Defining a variable to store the file path
+    with open(input_file, 'r') as filepointer:  # Open the file
+        # Read lines, not just the end of the word. End of the last character
+        lines = filepointer.readlines()
+        for line in lines:  # Get all lines elements into the line array.
+            line = line.strip()  # Strip whitespaces
+            # Select a random element into the array
+            choice = random.choice(lines)
+            if tire in line:  # If elements has '-' (dash) in that line
+                # Choose one and send the message
+                await ctx.channel.send(choice)
                 await ctx.channel.send('https://media.giphy.com/media/8fEaweALlO9dUmYuqv/giphy.gif')
                 break
 
+
+@bot.command(name='liste', help='Bu komut, tum listeyi ekrana yazdirir.')
+async def liste(ctx):  # Defining list method
+    response = """```diff\n"""  # a This is the string value that we want to print
+    i = 0  # Counter
+    # Taking the lines from izlenecek(wanttowatch) array
+    for line in izlenecek:
+        # Fills the string value with array elements
+        response = response + "{listecik}".format(listecik=line)
+        i += 1
+        if i % 110 == 0:
+            await ctx.channel.send(response + """```""")
+            response = """```diff\n"""  # ilk 110u yazdırdıktan sonra döngü dönecek ama daha veri var.
+    if i % 110 != 0:
+        await ctx.channel.send(response + """```""")
+
+
+@bot.command(name="izlenenler", help='Izlenenler listesini ekrana yazridir.')
+async def izlenenler(ctx):
+    guncelle()
+    response = """```diff\n"""
+    i = 0
+    for line in izlenenler:
+        response = response + "{listecik}".format(listecik=line)
+        i += 1
+        if i % 110 == 0:
+            await ctx.channel.send(response + """```""")
+            response = """```diff\n"""
+    if i % 110 != 0:
+        await ctx.channel.send(response + """```""")
+
+
+@bot.command(name='izlendi', help='Izlenen filmleri izlenenler listesine ekleyecektir.')
+async def editfile(ctx, args):
+    # Gets the given value start
+    response = ""
+    for arg in args:
+        response = response + "" + arg
+    args = response.title()
+    print("calışıyor " + args + " \n")
+    # Gets the given value end
+    input_file = "src\movielist.txt"
+    with open(input_file, 'r') as filepointer:
+        lines = filepointer.readlines()
+        new_lines = []
+        for line in lines:
+            line = line.strip()
+            if line not in new_lines:
+                if args in line:
+                    line = line.replace("-", "+")
+                    print("calışıyor2 " + args + " eşittir " + line)
+                    new_lines.append(line)
+                    await ctx.channel.send(line.replace('+', '') + " İzlenenler listesine eklendi!")
+                else:
+                    new_lines.append(line.title())
+    outputfile = "src\movielist.txt"
+    with open(outputfile, 'w') as filepointer:
+        filepointer.write('\n'.join(new_lines))
+    filepointer.close(outputfile)
+
+@bot.command(name='çıkar', help='Izlenen filmleri izlenenler listesine ekleyecektir.')
+async def editfile(ctx, args):
+    # Gets the given value start
+    response = ""
+    for arg in args:
+        response = response + "" + arg
+    args = response.title()
+    print("calışıyor " + args + " \n")
+    # Gets the given value end
+    input_file = "src\movielist.txt"
+    with open(input_file, 'r') as filepointer:
+        lines = filepointer.readlines()
+        new_lines = []
+        for line in lines:
+            line = line.strip()
+            if line not in new_lines:
+                if args in line:
+                    line = line.replace("+", "-")
+                    print("calışıyor2 " + args + " eşittir " + line)
+                    new_lines.append(line)
+                    await ctx.channel.send(line.replace('-', '') + "Listeden çıkarıldı!")
+                else:
+                    new_lines.append(line.title())
+    outputfile = "src\movielist.txt"
+    with open(outputfile, 'w') as filepointer:
+        filepointer.write('\n'.join(new_lines))
+    filepointer.close(outputfile)
+
+@bot.command(name='yazarlar', help='Yazarları gösterir.')
+async def editfile(ctx):
+    await ctx.channel.send("Bu bot;\nBuğra Akca ve Elif Nur Kemiksiz\nTarafından yazılmıştır.\n(evet tarafından)")
 bot.run(TOKEN)
