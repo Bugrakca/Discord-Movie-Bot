@@ -1,6 +1,6 @@
 - Melancholia
 - Interstellar
-- 500 Days of Summer
+- 500 Days Of Summer
 - Eternal Sunshine
 + Holy Motors
 - Tenet
@@ -10,30 +10,30 @@
 + Mr. Nobody
 - Mulholland Drive
 - Gone Girl
-- No Country for Old Man
-- Irréversible
-- Manchester by The Sea
+- No Country For Old Man
+- Irr�Versible
+- Manchester By The Sea
 - Das Experiment
 - Room 2015
 - Swiss Army Man
 - Jungle
 - Old Boy
 - Illisuonist
-- Once Upon a Time in America
+- Once Upon A Time In America
 - Butterfly Effect
-- RAN
+- Ran
 - Crouching Tiger Hidden Dragon
 - Manchurian Candidate
-- A Nightmare on Elm Street
+- A Nightmare On Elm Street
 - Locke
-- Lock, Stock and Two Smoking Barrels
+- Lock, Stock And Two Smoking Barrels
 - Snatch
 - Source Code
 - Groundhog Day
 - American Psycho
 - Mad Max
 - Usual Suspects
-- Blue Velvet
++ Blue Velvet
 - Ghostbusters
 - Seven
 - Pulp Fiction
@@ -42,17 +42,17 @@
 - The Grand Budapest Hotel
 - Inception
 - Reservior Dogs
-- GoodFellas
+- Goodfellas
 - E.T
 - Would You Rather
 - 2001: A Space Odyssey
 - Mystic River
 - The Girl With All The Gifts
-- One Flew Over the Cuckoo's Nest
+- One Flew Over The Cuckoo'S Nest
 - The Girl With Dragon Tattoo (1-2-3)
 - 1917
 - Downfall
-- The Skin I Live in
+- The Skin I Live In
 - Nocturnal Animals
 - Natural Born Killers
 + Er Ist Wieder Da
@@ -67,11 +67,12 @@
 - Watchmen
 - Final Destination
 - The Master
-- THE TREE OF LIFE
-- Ferris Bueller's Day Off
+- The Tree Of Life
+- Ferris Bueller'S Day Off
 - Frances Ha
 - Inglorious Basterds
 - Suspiria (1977)
+- Suspiria (2018)
 - Apocalypse Now
 - Dirty Harry
 - The Fall (2006)
@@ -83,15 +84,14 @@
 - Split
 - Unbreakable
 - Glass
-- Master and Commander The Far Side of The World
-- Enemy at The Gates
-- The Death of Stalin
+- Master And Commander The Far Side Of The World
+- Enemy At The Gates
++ The Death Of Stalin
 - Space Pirate Captain Harlock
 - Constantine
 - Moonlight
 - The Lobster
-- The Perks of Being a Wallflower
-- Salma
+- The Perks Of Being A Wallflower
 - About Time
 - Her
 - Spotlight
@@ -100,7 +100,7 @@
 - Birdman
 - Nightcrawler
 - The Innocents
-- 12 Years a Slave
+- 12 Years A Slave
 - Amistad
 - The Hunt
 - Casino Royale
@@ -116,13 +116,13 @@
 - Short Term 12
 - Another Earth
 - Three Billboards Outside Ebbing, Missouri
-- Call Me by Your Name
+- Call Me By Your Name
 - Shoplifters
 - Green Book
-- Ford v Ferrari
-- We Need to Talk About Kevin
-- Pride and Prejudice
-- Once Upon a Time…in Hollywood
+- Ford V Ferrari
+- We Need To Talk About Kevin
+- Pride And Prejudice
+- Once Upon A Time…In Hollywood
 - Personal Shopper
 - Black Coal, Thin Ice
 - Amour
@@ -135,8 +135,8 @@
 - Uncle Boonmee Who Can Recall His Past Lives
 - The Irishman
 - Anomalisa
-- Under the Skin
-- Winter's Bone
+- Under The Skin
+- Winter'S Bone
 - A Separation
 - Parasite
 - Phantom Thread
@@ -144,10 +144,16 @@
 - Toni Erdmann
 - Get Out
 - Boyhood
-- The Hunt for The Red October
+- The Hunt For The Red October
 - Flyboys
 - Tuskegee Airmen
-- School of Rock
+- School Of Rock
 - The Old Guard
 - The Fountain
-- Requiem for a Dream
+- Requiem For A Dream
+- Midnight In Paris
+- Lost Highway
+- The Elephant Man
+- Amelie
+- Machete Kills
+- Salma
