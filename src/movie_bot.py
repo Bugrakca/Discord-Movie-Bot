@@ -19,6 +19,10 @@
 import os
 # Importing random library
 import random
+# Importing urllib.request library
+import urllib.request
+# Importing re library
+import re
 # Importing discord ext commands
 from discord.ext.commands.core import Command
 # Importing discord error command - CommandNotFound
@@ -181,10 +185,15 @@ async def gununfilmi(ctx):  # Defining todaysmovie method
             line = line.strip()  # Strip whitespaces
             # Select a random element into the array
             choice = random.choice(lines)
+            search = choice # For further usage I define another variable
+            search = search.replace(" ", "+") # Replacing spaces to + (plus)
+            html = urllib.request.urlopen("https://www.youtube.com/results?search_query=trailer" + search) # Using the link for search
             if tire in line:  # If elements has '-' (dash) in that line
                 # Choose one and send the message
                 await ctx.channel.send(choice)
-                await ctx.channel.send('https://media.giphy.com/media/8fEaweALlO9dUmYuqv/giphy.gif')
+                video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode()) # Read the link and decode it for uniqe regex
+                await ctx.channel.send("https://www.youtube.com/watch?v=" + video_ids[0]) # Embed the first element in the link
+                await ctx.channel.send('https://media.giphy.com/media/8fEaweALlO9dUmYuqv/giphy.gif') # Sending some gif
                 break
 
 
