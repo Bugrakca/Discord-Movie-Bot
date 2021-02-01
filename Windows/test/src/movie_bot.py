@@ -68,6 +68,23 @@ def guncelle(): # Update the movielist.txt
             else:
                 print('something is wrong')
 
+def efendiOlun(args):
+    #for Lowercase tr characters
+    args = args.replace("ç", "c")
+    args = args.replace("ş", "s")
+    args = args.replace("ğ", "g")
+    args = args.replace("ı", "i")
+    args = args.replace("ü", "u")
+    args = args.replace("ö", "o")
+    #for Uppercase tr characters
+    args = args.replace("Ç", "c")
+    args = args.replace("Ş", "s")
+    args = args.replace("Ğ", "g")
+    args = args.replace("İ", "i")
+    args = args.replace("Ü", "u")
+    args = args.replace("Ö", "o")
+    return args
+
 # Printing to console, 'Bot is connected'
 @bot.event
 async def on_ready():
@@ -199,6 +216,18 @@ async def gununfilmi(ctx):  # Defining todaysmovie method
                 await ctx.channel.send('https://media.giphy.com/media/8fEaweALlO9dUmYuqv/giphy.gif') # Sending some gif
                 break
 
+@bot.command(name = "trailer")
+async def trailer(ctx, *args): # "*" means that the program may take more than 1 words
+    response = ""
+    for arg in args:
+        response = response + " " + arg
+    args = response
+    args = efendiOlun(args)
+    args = args.lower()
+    film_adi = args.replace(" ", "+")
+    search_link = urllib.request.urlopen("https://www.youtube.com/results?search_query=trailer" + film_adi)
+    video_ids = re.findall(r"watch\?v=(\S{11})", search_link.read().decode('utf-8'))
+    await ctx.channel.send("https://www.youtube.com/watch?v=" + video_ids[0])
 
 @bot.command(name='liste', help='Bu komut, tum listeyi ekrana yazdirir.')
 async def liste(ctx):  # Defining list method
