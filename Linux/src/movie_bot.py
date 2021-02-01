@@ -48,7 +48,7 @@ bot = commands.Bot(command_prefix='!')
 
 def guncelle(): # Update the movielist.txt
     global file_path
-    file_path = "root/Discord-Movie-Bot/Linux/src/movielist.txt"
+    file_path = "/root/Discord-Movie-Bot/Linux/src/movielist.txt"
     with open(file_path, 'r') as filepointer:
         tire = '-'
         arti = '+'
