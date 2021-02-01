@@ -46,23 +46,10 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 # Assign a prefix for all bot commands name
 bot = commands.Bot(command_prefix='!')
 
-# Printing to console, 'Bot is connected'
-
-
-@bot.event
-async def on_ready():
-    print(f'{bot.user} has connected to Discord!')
-
-
-# When bot connect, open movielist.txt file. Check all the lines if has '-' (dash) or not.
-@bot.event
-async def on_connect():
-    guncelle()
-
-
-def guncelle():
-    input_file = "/root/Discord-Movie-Bot/src/movielist.txt"
-    with open(input_file, 'r') as filepointer:  # Su an bir problem gorunmuyor
+def guncelle(): # Update the movielist.txt
+    global file_path
+    file_path = "root/Discord-Movie-Bot/Linux/src/movielist.txt"
+    with open(file_path, 'r') as filepointer:
         tire = '-'
         arti = '+'
         global izlenenler
@@ -80,6 +67,33 @@ def guncelle():
             else:
                 print('something is wrong')
 
+def efendiOlun(args):
+    #for Lowercase tr characters
+    args = args.replace("ç", "c")
+    args = args.replace("ş", "s")
+    args = args.replace("ğ", "g")
+    args = args.replace("ı", "i")
+    args = args.replace("ü", "u")
+    args = args.replace("ö", "o")
+    #for Uppercase tr characters
+    args = args.replace("Ç", "c")
+    args = args.replace("Ş", "s")
+    args = args.replace("Ğ", "g")
+    args = args.replace("İ", "i")
+    args = args.replace("Ü", "u")
+    args = args.replace("Ö", "o")
+    return args
+
+# Printing to console, 'Bot is connected'
+@bot.event
+async def on_ready():
+    print(f'{bot.user} has connected to Discord!')
+
+
+# When bot connect, open movielist.txt file. Check all the lines if has '-' (dash) or not.
+@bot.event
+async def on_connect():
+    guncelle()
 
 @bot.event
 # Get errors by using ctx and error arguments
@@ -118,7 +132,7 @@ async def on_message(ctx):  # Called when a message is created and sent.
 
 
 # # Edit last message.
-# @bot.command(name='edit', help='Son yazilan mesaji duzenler.')
+# @bot.command(name='edit', help='')
 # async def edit(ctx):
 #     message_id1 = message_id  # Get message id
 #     channel_id1 = bot.get_channel(channel_id)  # Get channel id for object
@@ -129,7 +143,7 @@ async def on_message(ctx):  # Called when a message is created and sent.
 
 
 # Create an add command
-@bot.command(name='ekle', help='Listeye yeni film ekler')
+@bot.command(name='ekle', help='Listeye yeni film ekler.')
 async def editfile(ctx, *args):  # Define an editfile method
     guncelle()
     i = -1
@@ -155,8 +169,7 @@ async def editfile(ctx, *args):  # Define an editfile method
     elif i == 2:
         await ctx.channel.send("Eklendi. Vakti gelince izleriz." + args)
         izlenecek.append("\n-" + args)
-        output_file = "/root/Discord-Movie-Bot/src/movielist.txt"
-        with open(output_file, 'a') as filepointer:
+        with open(file_path, 'a') as filepointer:
             filepointer.write("\n-" + args)
     elif i == -1:
         await ctx.channel.send("Elif bir işi de başar be aslanım:" + args)
@@ -164,8 +177,7 @@ async def editfile(ctx, *args):  # Define an editfile method
 
 @bot.command(name='kontrolet', help = 'Listede ayni isimden film var mi kontrol edecektir, varsa birini silecek.')  # Create a checkduplicate command
 async def editfile(ctx):  # Define editfile method
-    input_file = "/root/Discord-Movie-Bot/src/movielist.txt"  # Defining a variable to store the file path
-    with open(input_file, 'r') as filepointer:  # Open the file
+    with open(file_path, 'r') as filepointer:  # Open the file
         # Read lines, not just the end of the word. End of the last character
         lines = filepointer.readlines()
         # Defining a variable to store the new lines in array list.
@@ -176,18 +188,16 @@ async def editfile(ctx):  # Define editfile method
                 new_lines.append(line.title())  # Add to the last line
             else:  # Else print line, we don't need that but I want to see which word is duplicate
                 print(line.title())
-    outputfile = "/root/Discord-Movie-Bot/src/movielist.txt"  # Defining a variable to store the file path
-    with open(outputfile, 'w') as filepointer:  # Open the file
+    with open(file_path, 'w') as filepointer:  # Open the file
         # Write into the file all the array elements.
         filepointer.write('\n'.join(new_lines))
 
 
 # Creating a todaysmovie command
-@bot.command(name='gününfilmi', help='Bu komut rastgele bir film sececektir.')
+@bot.command(name='gününfilmi', help=' Bu komut rastgele bir film sececektir.')
 async def gununfilmi(ctx):  # Defining todaysmovie method
     tire = '-'  # Defining a dash variable
-    input_file = "/root/Discord-Movie-Bot/src/movielist.txt"  # Defining a variable to store the file path
-    with open(input_file, 'r') as filepointer:  # Open the file
+    with open(file_path, 'r') as filepointer:  # Open the file
         # Read lines, not just the end of the word. End of the last character
         lines = filepointer.readlines()
         for line in lines:  # Get all lines elements into the line array.
@@ -205,6 +215,18 @@ async def gununfilmi(ctx):  # Defining todaysmovie method
                 await ctx.channel.send('https://media.giphy.com/media/8fEaweALlO9dUmYuqv/giphy.gif') # Sending some gif
                 break
 
+@bot.command(name = "trailer")
+async def trailer(ctx, *args): # "*" means that the program may take more than 1 words
+    response = ""
+    for arg in args:
+        response = response + " " + arg
+    args = response
+    args = efendiOlun(args)
+    args = args.lower()
+    film_adi = args.replace(" ", "+")
+    search_link = urllib.request.urlopen("https://www.youtube.com/results?search_query=trailer" + film_adi)
+    video_ids = re.findall(r"watch\?v=(\S{11})", search_link.read().decode('utf-8'))
+    await ctx.channel.send("https://www.youtube.com/watch?v=" + video_ids[0])
 
 @bot.command(name='liste', help='Bu komut, tum listeyi ekrana yazdirir.')
 async def liste(ctx):  # Defining list method
@@ -251,8 +273,7 @@ async def editfile(ctx, args):
     args = response.title()
     print("calışıyor " + args + " \n")
     # Gets the given value end
-    input_file = "/root/Discord-Movie-Bot/src/movielist.txt"
-    with open(input_file, 'r') as filepointer:
+    with open(file_path, 'r') as filepointer:
         lines = filepointer.readlines()
         new_lines = []
         for line in lines:
@@ -265,10 +286,9 @@ async def editfile(ctx, args):
                     await ctx.channel.send(line.replace('+', '') + " İzlenenler listesine eklendi!")
                 else:
                     new_lines.append(line.title())
-    outputfile = "/root/Discord-Movie-Bot/src/movielist.txt"
-    with open(outputfile, 'w') as filepointer:
+    with open(file_path, 'w') as filepointer:
         filepointer.write('\n'.join(new_lines))
-    filepointer.close(outputfile)
+    filepointer.close(file_path)
 
 @bot.command(name='izlenmedi', help='Izlenen filmleri izlenenler listesinden çıkaracaktır.')
 async def editfile(ctx, args):
@@ -278,8 +298,7 @@ async def editfile(ctx, args):
         response = response + "" + arg
     args = response.title()
     # Gets the given value end
-    input_file = "/root/Discord-Movie-Bot/src/movielist.txt"
-    with open(input_file, 'r') as filepointer:
+    with open(file_path, 'r') as filepointer:
         lines = filepointer.readlines()
         new_lines = []
         for line in lines:
@@ -291,10 +310,9 @@ async def editfile(ctx, args):
                     await ctx.channel.send(line.replace('-', '') + " İzlenenler listesinden çıkarıldı!")
                 else:
                     new_lines.append(line.title())
-    outputfile = "/root/Discord-Movie-Bot/src/movielist.txt"
-    with open(outputfile, 'w') as filepointer:
+    with open(file_path, 'w') as filepointer:
         filepointer.write('\n'.join(new_lines))
-    filepointer.close(outputfile)
+    filepointer.close(file_path)
 
 @bot.command(name='çıkar', help='Izlenen filmleri izlenenler listesinden çıkaracaktır.')
 async def editfile(ctx, args):
@@ -304,8 +322,7 @@ async def editfile(ctx, args):
         response = response + "" + arg
     args = response.title()
     # Gets the given value end
-    input_file = "/root/Discord-Movie-Bot/src/movielist.txt"
-    with open(input_file, 'r') as filepointer:
+    with open(file_path, 'r') as filepointer:
         lines = filepointer.readlines()
         new_lines = []
         for line in lines:
@@ -315,10 +332,9 @@ async def editfile(ctx, args):
                     await ctx.channel.send(line.replace('-', '') + " Listeden silindi!")
                 else:
                     new_lines.append(line.title())
-    outputfile = "/root/Discord-Movie-Bot/src/movielist.txt"
-    with open(outputfile, 'w') as filepointer:
+    with open(file_path, 'w') as filepointer:
         filepointer.write('\n'.join(new_lines))
-    filepointer.close(outputfile)
+    filepointer.close(file_path)
 
 
 @bot.command(name = "clear", help = 'Verdiginiz deger kadar mesaji, bulunan kanal icin silecektir.')
