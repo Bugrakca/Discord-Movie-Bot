@@ -261,7 +261,7 @@ async def izlenenler(ctx):
 
 @bot.command(name ='çıkargöster', help = 'Çıkar göster gifini çıkarıp gösterir')
 async def cikargoster(ctx):
-    await ctx.channel.send('https://cdn.discordapp.com/attachments/804499069601841173/805175464955609118/tenor.gif')
+    await ctx.channel.send('https://media1.tenor.com/images/898fa5094619707942d88fa3c95ad93f/tenor.gif?itemid=15593965')
 
 
 @bot.command(name='izlendi', help='Izlenen filmleri izlenenler listesine ekleyecektir.')
