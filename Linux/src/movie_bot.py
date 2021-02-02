@@ -247,7 +247,7 @@ async def liste(ctx):  # Defining list method
 @bot.command(name="izlenenler", help='Izlenenler listesini ekrana yazridir.')
 async def izlenenler(ctx):
     guncelle()
-    await ctx.channel.send('https://cdn.discordapp.com/attachments/804499069601841173/805175464955609118/tenor.gif')
+    await ctx.channel.send('https://media1.tenor.com/images/898fa5094619707942d88fa3c95ad93f/tenor.gif?itemid=15593965')
     response = """```diff\n"""
     i = 0
     for line in izlenenler:
