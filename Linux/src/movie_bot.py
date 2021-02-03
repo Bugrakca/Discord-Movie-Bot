@@ -269,7 +269,7 @@ async def editfile(ctx, *args):
     # Gets the given value start
     response = ""
     for arg in args:
-        response = response + "" + arg
+        response = response + " " + arg
     args = response.title()
     print("calışıyor " + args + " \n")
     # Gets the given value end
@@ -294,7 +294,7 @@ async def editfile(ctx, *args):
     # Gets the given value start
     response = ""
     for arg in args:
-        response = response + "" + arg
+        response = response + " " + arg
     args = response.title()
     # Gets the given value end
     with open(file_path, 'r') as filepointer:
