@@ -265,7 +265,7 @@ async def cikargoster(ctx):
 
 
 @bot.command(name='izlendi', help='Izlenen filmleri izlenenler listesine ekleyecektir.')
-async def editfile(ctx, args):
+async def editfile(ctx, *args):
     # Gets the given value start
     response = ""
     for arg in args:
@@ -288,10 +288,9 @@ async def editfile(ctx, args):
                     new_lines.append(line.title())
     with open(file_path, 'w') as filepointer:
         filepointer.write('\n'.join(new_lines))
-    filepointer.close(file_path)
 
 @bot.command(name='izlenmedi', help='Izlenen filmleri izlenenler listesinden çıkaracaktır.')
-async def editfile(ctx, args):
+async def editfile(ctx, *args):
     # Gets the given value start
     response = ""
     for arg in args:
@@ -312,7 +311,6 @@ async def editfile(ctx, args):
                     new_lines.append(line.title())
     with open(file_path, 'w') as filepointer:
         filepointer.write('\n'.join(new_lines))
-    filepointer.close(file_path)
 
 @bot.command(name='çıkar', help='Izlenen filmleri izlenenler listesinden çıkaracaktır.')
 async def editfile(ctx, args):
@@ -334,7 +332,6 @@ async def editfile(ctx, args):
                     new_lines.append(line.title())
     with open(file_path, 'w') as filepointer:
         filepointer.write('\n'.join(new_lines))
-    filepointer.close(file_path)
 
 
 @bot.command(name = "clear", help = 'Verdiginiz deger kadar mesaji, bulunan kanal icin silecektir.')
