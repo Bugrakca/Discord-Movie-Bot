@@ -269,30 +269,20 @@ async def editfile(ctx):  # Define editfile method
 # Creating a todaysmovie command
 @bot.command(name='gününfilmi', help=' Bu komut rastgele bir film sececektir.')
 async def gununfilmi(ctx):  # Defining todaysmovie method
-    tire = '-'  # Defining a dash variable
-    with open(file_path, 'r') as filepointer:  # Open the file
-        # Read lines, not just the end of the word. End of the last character
-        lines = filepointer.readlines()
-        for line in lines:  # Get all lines elements into the line array.
-            line = line.strip()  # Strip whitespaces
-            # Select a random element into the array
-            choice = random.choice(lines)
-            search = choice  # For further usage I define another variable
-            search = search.replace(" ", "+")  # Replacing spaces to + (plus)
-            html = urllib.request.urlopen(
-                "https://www.youtube.com/results?search_query=trailer" + search)  # Using the link for search
-            if tire in line:  # If elements has '-' (dash) in that line
-                # Choose one and send the message
-                await ctx.channel.send(choice)
-                # Read the link and decode it for uniqe regex
-                video_ids = re.findall(
-                    r"watch\?v=(\S{11})", html.read().decode())
-                # Embed the first element in the link
-                await ctx.channel.send("https://www.youtube.com/watch?v=" + video_ids[0])
-                # Sending some gif
-                await ctx.channel.send('https://media.giphy.com/media/8fEaweALlO9dUmYuqv/giphy.gif')
-                break
-
+    # Select a random element into the array
+    choice = random.choice(izlenecek)
+    search = choice  # For further usage I define another variable
+    search = search.replace(" ", "+")  # Replacing spaces to + (plus)
+    html = urllib.request.urlopen(
+        "https://www.youtube.com/results?search_query=trailer" + search)  # Using the link for search
+    await ctx.channel.send(choice)
+    # Read the link and decode it for uniqe regex
+    video_ids = re.findall(
+        r"watch\?v=(\S{11})", html.read().decode())
+    # Embed the first element in the link
+    await ctx.channel.send("https://www.youtube.com/watch?v=" + video_ids[0])
+    # Sending some gif
+    await ctx.channel.send('https://media.giphy.com/media/8fEaweALlO9dUmYuqv/giphy.gif')
 
 @bot.command(name="trailer")
 async def trailer(ctx, *args):  # "*" means that the program may take more than 1 words
@@ -317,8 +307,6 @@ async def liste(ctx):  # Defining list method
     await arrayYazdır(ctx, izlenecek)
 
 # Prints the watched movies
-
-
 @bot.command(name="izlenenler", help='Izlenenler listesini ekrana yazridir.')
 async def izlenenler(ctx):
     guncelle()
@@ -326,8 +314,6 @@ async def izlenenler(ctx):
     await arrayYazdır(ctx, izlenenler)
 
 # Send a gif to channel.
-
-
 @bot.command(name='çıkargöster', help='Çıkar göster gifini çıkarıp gösterir')
 async def cikargoster(ctx):
     await ctx.channel.send('https://media1.tenor.com/images/898fa5094619707942d88fa3c95ad93f/tenor.gif?itemid=15593965')
