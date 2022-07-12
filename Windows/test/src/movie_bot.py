@@ -11,9 +11,8 @@
 # DONE 2.1- önce arraye eklenecek.
 # DONE 2.2- sonra kod direkt movielist.txt verisini silinip arraydekileri yazacak.
 # DONE   3- !bugeceninfilmi random film çekecek.
-# TODO 3.1- Timer Olsun
 # DONE 3.2- Cikar goster gifini ekle
-# FIXME:3.3- a harfini yazinca tum a harfini iceren filmleri listeden silinmesi.
+# DONE:3.3- a harfini yazinca tum a harfini iceren filmleri listeden silinmesi.
 
 # Import OS library
 import os
@@ -46,20 +45,20 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 # Assign a prefix for all bot commands name
 bot = commands.Bot(command_prefix='!')
 
+file_path = "C:\\Users\\Bugra\\Documents\\Github\\Discord-Movie-Bot\\Windows\\test\\src\\movielist.txt"
+tumFilmler = [], izlenenler = [], izlenecek = []
 
-def guncelle():  # Update the movielist.txt
-    global file_path
-    file_path = "C:\\Users\\Bugra\\Documents\\Github\\Discord-Movie-Bot\\Windows\\test\\src\\movielist.txt"
+channel_id = None
+message_id = None
+hello_there = None
+
+tire = '-'
+arti = '+'
+
+def guncelle():  # Update the movielist.txt file
     with open(file_path, 'r') as filepointer:
-        tire = '-'
-        arti = '+'
-        global izlenenler
-        global izlenecek
-        global tumFilmler
-        tumFilmler = []
-        izlenenler = []
-        izlenecek = []
         lines = filepointer.readlines()
+
         for line in lines:
             tumFilmler.append(line)
             # If one line has '-' (dash), then add that line in to the izlenecekler(want to watch) list.
@@ -188,9 +187,6 @@ async def on_command_error(ctx, error):
 async def on_message(ctx):  # Called when a message is created and sent.
     if ctx.author == bot.user:
         return
-    global channel_id
-    global message_id
-    global hello_there
 
     hello_there = [
         """```diff\n- Hello!```""",
